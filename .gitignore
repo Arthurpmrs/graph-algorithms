@@ -1,3 +1,14 @@
+# Ignore binaries
+# Exclude everything
+*
+# Include folders
+!*/
+# include files with any extension
+!*.*
+
+# IDE
+.vscode
+
 # Prerequisites
 *.d
 
