@@ -11,6 +11,10 @@ struct Edge
 {
     int neighbor;
     int weight;
+    bool operator<(const Edge &other) const
+    {
+        return weight <= other.weight;
+    }
 };
 
 class Graph
@@ -30,7 +34,6 @@ public:
     void visit(int v);
     void registerParent(int vertex, int parent);
     const vector<Edge> &getVertexEdges(int v);
-    vector<Edge> *GetVertexEdges2(int v);
     Edge *getSmallestWeightEdge(int v, set<int> &exclude);
     void print();
     void printVisited();

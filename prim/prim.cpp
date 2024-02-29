@@ -9,91 +9,82 @@ const int INF = 100000000;
 void prim(Graph &graph, Graph &mst)
 {
     int n = graph.getSize();
-    vector<Edge *> vertexMinWeightEdge(n, NULL);
+    cout << "size = " << n << endl;
+    vector<Edge> minWeightEdge(n, {-1, INF});
+    set<Edge> edgeQ;
 
-    set<int> q;
-
-    for (int i = 0; i < graph.getSize(); ++i)
+    // This is necessary to check if the graph provided starts at 0 or 1.
+    for (int i = 0; i < n; ++i)
     {
-        q.insert(i);
+        if (graph.getVertexEdges(i).size() > 0)
+        {
+            edgeQ.insert({i, INF});
+            break;
+        }
     }
 
-    while (!q.empty())
+    for (int i = 0; i < n; ++i)
     {
-        cout << "NOVA ITERAÇÃO--------\n";
-
-        int smallestCostVertex = *q.begin();
-        cout << "smallestVertexInit: " << smallestCostVertex << endl;
-        int smallestCost = INF;
-        for (int v : q)
+        if (edgeQ.empty())
         {
-            if (vertexMinWeightEdge[v] != NULL &&
-                vertexMinWeightEdge[v]->weight < smallestCost)
+            cout << "No MST!" << endl;
+            break;
+        }
+
+        int v = edgeQ.begin()->neighbor;
+        edgeQ.erase(edgeQ.begin());
+
+        graph.visit(v);
+
+        for (Edge e : graph.getVertexEdges(v))
+        {
+            if (graph.notVisited(e.neighbor) &&
+                e.weight < minWeightEdge[e.neighbor].weight)
             {
-                cout << "entrei no if (" << v << ")" << endl;
-                smallestCost = vertexMinWeightEdge[v]->weight;
-                smallestCostVertex = v;
-                cout << "     smallestCost = " << smallestCost << endl;
+                // cout << "   " << e.neighbor << " " << e.weight << ", ";
+                minWeightEdge[e.neighbor] = {v, e.weight};
+                // edgeQ.erase({e.neighbor, minWeightEdge[e.neighbor].weight});
+                edgeQ.insert({e.neighbor, e.weight});
             }
         }
-
-        cout << "smallestVertex = " << smallestCostVertex << endl;
-
-        q.erase(smallestCostVertex);
-
-        int sw = INF;
-        Edge *swEdge = NULL;
-        vector<Edge> *vEdges = graph.GetVertexEdges2(smallestCostVertex);
-        for (int i = 0; i < vEdges->size(); ++i)
+        cout << "\n---SET---" << endl;
+        for (Edge e : edgeQ)
         {
-            int neighbor = (*vEdges)[i].neighbor;
-            int weight = (*vEdges)[i].weight;
-
-            if (q.find(neighbor) != q.end())
-            {
-                if (vertexMinWeightEdge[neighbor] != NULL &&
-                    weight < vertexMinWeightEdge[neighbor]->weight)
-                {
-                    vertexMinWeightEdge[neighbor]->weight = weight;
-                }
-                else
-                {
-                    vertexMinWeightEdge[neighbor] = &(*vEdges)[i];
-                }
-
-                if (weight < sw)
-                {
-                    sw = weight;
-                    swEdge = &(*vEdges)[i];
-                }
-            }
-        }
-        if (swEdge == NULL)
-        {
-            continue;
-        }
-        vertexMinWeightEdge[smallestCostVertex] = swEdge;
-        mst.addEdge(smallestCostVertex, swEdge->neighbor, swEdge->weight);
-
-        cout << "---SET---" << endl;
-        for (int v : q)
-        {
-            cout << v << endl;
-        }
-        cout << "--pesos minimos----" << endl;
-
-        for (int i = 0; i < n; ++i)
-        {
-            Edge *e = vertexMinWeightEdge[i];
-            if (e == NULL)
+            if (e.neighbor == -1)
             {
                 cout << "null\n";
             }
             else
             {
-                cout << i << ": (w=" << e->weight << " ,neig=" << e->neighbor << ")\n";
+                cout << "(u=" << e.neighbor << ", w=" << e.weight << ")\n";
             }
         }
+        cout << endl;
+
+        cout << "--pesos minimos----" << endl;
+        for (int i = 0; i < n; ++i)
+        {
+            Edge e = minWeightEdge[i];
+            if (e.neighbor == -1)
+            {
+                cout << "null\n";
+            }
+            else
+            {
+                cout << i << ": (u=" << e.neighbor << ", w=" << e.weight << ")\n";
+            }
+        }
+    }
+
+    // Build the MST based on the minWeightEdge vector
+    for (int i = 0; i < n; ++i)
+    {
+        if (minWeightEdge[i].neighbor == -1)
+        {
+            continue;
+        }
+
+        mst.addEdge(i, minWeightEdge[i].neighbor, minWeightEdge[i].weight);
     }
 }
 
@@ -107,7 +98,7 @@ void readGraph(Graph &graph, int edgeCount)
     }
 }
 
-int getTotalCost(Graph &graph)
+int getTotalWeight(Graph &graph)
 {
     int totalWeight = 0;
     for (int v = 0; v < graph.getSize(); ++v)
@@ -125,11 +116,12 @@ int main()
     int n, m;
     cin >> n >> m;
 
-    Graph graph(n + 1);
+    Graph graph(n);
+    Graph mst(n);
     readGraph(graph, m);
-    graph.print();
-    Graph mst(n + 1);
+
     prim(graph, mst);
     mst.print();
-    cout << "Total Weight = " << getTotalCost(mst) << endl;
+
+    cout << "Total Weight = " << getTotalWeight(mst) << endl;
 }

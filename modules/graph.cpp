@@ -2,10 +2,10 @@
 
 using namespace std;
 
-Graph::Graph(int n) : _adjList(n), _predecessors(n, -1), _parents(n, -1)
+Graph::Graph(int n) : _adjList(n + 1), _predecessors(n + 1, -1), _parents(n + 1, -1)
 {
     _visitCount = 0;
-    _vertexCount = n;
+    _vertexCount = n + 1;
     for (int i = 0; i < _vertexCount; i++)
     {
         _adjList[i] = vector<Edge>();
@@ -41,11 +41,6 @@ void Graph::registerParent(int vertex, int parent)
 const vector<Edge> &Graph::getVertexEdges(int v)
 {
     return _adjList[v];
-}
-
-vector<Edge> *Graph::GetVertexEdges2(int v)
-{
-    return &_adjList[v];
 }
 
 Edge *Graph::getSmallestWeightEdge(int v, set<int> &exclude)
