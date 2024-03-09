@@ -23,6 +23,7 @@ void prim(Graph &graph, Graph &mst)
         }
     }
 
+    // Main algorithm
     for (int i = 0; i < n; ++i)
     {
         if (edgeQ.empty())
@@ -41,37 +42,8 @@ void prim(Graph &graph, Graph &mst)
             if (graph.notVisited(e.neighbor) &&
                 e.weight < minWeightEdge[e.neighbor].weight)
             {
-                // cout << "   " << e.neighbor << " " << e.weight << ", ";
                 minWeightEdge[e.neighbor] = {v, e.weight};
-                // edgeQ.erase({e.neighbor, minWeightEdge[e.neighbor].weight});
                 edgeQ.insert({e.neighbor, e.weight});
-            }
-        }
-        cout << "\n---SET---" << endl;
-        for (Edge e : edgeQ)
-        {
-            if (e.neighbor == -1)
-            {
-                cout << "null\n";
-            }
-            else
-            {
-                cout << "(u=" << e.neighbor << ", w=" << e.weight << ")\n";
-            }
-        }
-        cout << endl;
-
-        cout << "--pesos minimos----" << endl;
-        for (int i = 0; i < n; ++i)
-        {
-            Edge e = minWeightEdge[i];
-            if (e.neighbor == -1)
-            {
-                cout << "null\n";
-            }
-            else
-            {
-                cout << i << ": (u=" << e.neighbor << ", w=" << e.weight << ")\n";
             }
         }
     }
