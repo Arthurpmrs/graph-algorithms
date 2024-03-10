@@ -6,6 +6,9 @@
 # include files with any extension
 !*.*
 
+#include make file
+!makefile
+
 # IDE
 .vscode
 
