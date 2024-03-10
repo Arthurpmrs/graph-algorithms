@@ -52,23 +52,6 @@ int Graph::getParent(int v) {
     return _parents[v];
 }
 
-Edge *Graph::getSmallestWeightEdge(int v, set<int> &exclude)
-{
-    Edge *smallestCostEdge = NULL;
-    int smallestCost = 1000000000;
-    for (int i = 0; i < _adjList[v].size(); ++i)
-    {
-        int neighbor = _adjList[v][i].neighbor;
-        int weight = _adjList[v][i].weight;
-        if (exclude.find(neighbor) != exclude.end() && weight < smallestCost)
-        {
-            smallestCost = weight;
-            smallestCostEdge = &_adjList[v][i];
-        }
-    }
-    return smallestCostEdge;
-}
-
 void Graph::print()
 {
     for (int i = 0; i < _vertexCount; i++)

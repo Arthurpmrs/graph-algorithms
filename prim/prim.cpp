@@ -18,82 +18,69 @@ struct VertexCost {
     }
 };
 
-void printq(priority_queue<VertexCost> q) {
-    cout << "################# FILA INTEIRA #######" << endl;
-    while (!q.empty()) {
-        VertexCost vc = q.top();
-        q.pop();
-        cout << "(" << vc.vertex << "," << vc.cost << ")" << endl;
-    }
-    cout << "#############################################" << endl;
-
-}
-
-void prim(Graph &graph, Graph &mst)
+/**
+ * @brief Prim's algorithm implementation
+ * 
+ * @param graph reference to the graph to find the minimum spanning tree
+ */
+Graph prim(Graph &graph, int initialVertex = 1)
 {
     vector<int> cost(graph.getSize());
     priority_queue<VertexCost> q;
 
-    cost[1] = 0;
     for (int i = 1; i < graph.getSize(); ++i) {
         cost[i] = INF;
         q.push({cost[i], i});
     }
 
+    // Start with the initialVertex
+    cost[initialVertex] = 0;
+    q.push({cost[initialVertex], initialVertex});
+
     while (!q.empty()) {
-    // for (int i = 1; i < graph.getSize(); ++i) {
-        VertexCost vertexCost = q.top();
+        int u = q.top().vertex;
         q.pop();
-        int u = vertexCost.vertex;
+
         graph.visit(u);
-        // cout <<"fila: "<< vertexCost.vertex << " " << vertexCost.cost << endl;
 
         vector<Edge> neighbors = graph.getVertexEdges(u);
-        // cout << "   vizinhos dele: " << endl;
+
         for (Edge edge : neighbors) {
             int v = edge.neighbor;
-            // cout << "   (" << edge.neighbor << "," << edge.weight << ")" << endl;
             if (edge.weight < cost[v] && graph.notVisited(v)) {
-            // if (edge.weight < cost[v]) {
-                // cout << "       atualizar esse" << endl;
                 cost[v] = edge.weight;
                 graph.registerParent(v, u);
                 q.push({cost[v], v});
             }
         }
-
-        // printq(q);
     }
 
     
+    // Construct the MST graph
+    Graph mst(graph.getSize() - 1);
 
     for (int i = 0; i < graph.getSize(); ++i) {
-        // cout << i << ":" << "w" << graph.getParent(i) << endl;
-
         if (graph.getParent(i) == -1) {
             continue;
         }
-
         mst.addEdge(i, graph.getParent(i), cost[i]);
     }
+
+    return mst;
 }
 
-void readGraph(Graph &graph, int edgeCount)
-{
-    for (int i = 0; i < edgeCount; i++)
-    {
-        int u, v, w;
-        cin >> u >> v >> w;
-        graph.addEdge(u, v, w);
-    }
-}
-
-int getTotalWeight(Graph &graph)
+/**
+ * @brief Get the total weight of the minimum spanning tree
+ * 
+ * @param mst reference to the graph that represents the minimum spanning tree
+ * @return int 
+ */
+int getTotalWeight(Graph &mst)
 {
     int totalWeight = 0;
-    for (int v = 0; v < graph.getSize(); ++v)
+    for (int v = 0; v < mst.getSize(); ++v)
     {
-        for (Edge e : graph.getVertexEdges(v))
+        for (Edge e : mst.getVertexEdges(v))
         {
             totalWeight += e.weight;
         }
@@ -101,7 +88,13 @@ int getTotalWeight(Graph &graph)
     return totalWeight / 2;
 }
 
-Graph create_graph_from_file(string filename) {
+/**
+ * @brief Create a graph from a given input file
+ * 
+ * @param filename input filename
+ * @return Graph 
+ */
+Graph createGraphFromFile(string filename) {
     ifstream file(filename);
 
     int n, m;
@@ -125,38 +118,55 @@ Graph create_graph_from_file(string filename) {
     return graph;
 }
 
-int get_paremeter_value(char* parameter, int argc, char* argv[], string* value) {
+/**
+ * @brief Gets the value of a parameter from the command line arguments.
+ * 
+ * @param parameter the parameter to look for
+ * @param argc number of arguments
+ * @param argv array of arguments
+ * @param value pointer to a string to store the value of the parameter
+ * @return true if the parameter was found, false otherwise
+ */
+bool getParameterValue(char* parameter, int argc, char* argv[], string* value = NULL) {
     for (int i = 0; i < argc; i++) {
         if (strcmp(parameter, argv[i]) == 0) {
             if (i + 1 == argc || argv[i + 1][0] == '-') {
                 *value = "";
-                return 1;
             } else {
                 *value = string(argv[i + 1]);
-                return 2;
             }
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
-void print_mst_solution(Graph &mst, string output_filename = "") {
-    if (output_filename != "") {
-        ofstream file(output_filename);
-        for (int i = 0; i < mst.getSize(); i++) {
-            for (Edge e : mst.getVertexEdges(i)) {
-                if (mst.notVisited(e.neighbor)) {
-                    file << "(" << i << "," << e.neighbor << ") ";
-                }
+/**
+ * @brief Writes the minimum spanning tree edges to a file.
+ * 
+ * @param mst reference to the graph that represents the minimum spanning tree
+ * @param output_filename name of the file to write the edges
+ */
+void writeMstEdgesToFile(Graph &mst, string output_filename) {
+    ofstream file(output_filename);
+    for (int i = 0; i < mst.getSize(); i++) {
+        for (Edge e : mst.getVertexEdges(i)) {
+            if (mst.notVisited(e.neighbor)) {
+                file << i << " " << e.neighbor << " " << e.weight << endl;
             }
-            mst.visit(i);
         }
-        mst.resetVisited();
-        file << endl;
-        file.close();
-        return;
+        mst.visit(i);
     }
-    
+    mst.resetVisited();
+    file.close();
+}
+
+/**
+ * @brief Prints the minimum spanning tree solution to cout.
+ * 
+ * @param mst reference to the graph that represents the minimum spanning tree
+ */
+void printMstSolution(Graph &mst) {
     for (int i = 0; i < mst.getSize(); i++) {
         for (Edge e : mst.getVertexEdges(i)) {
             if (mst.notVisited(e.neighbor)) {
@@ -172,39 +182,35 @@ void print_mst_solution(Graph &mst, string output_filename = "") {
 
 int main(int argc, char* argv[])
 {
-    // string filename = "prim/arquivo-entrada.dat";
+    // Check for a -f flag
     string filename = "";
-    get_paremeter_value((char*)"-f", argc, argv, &filename);
+    getParameterValue((char*)"-f", argc, argv, &filename);
     
+    // It is mandatory to have a filename
     if (filename == "") {
-        cout << "Invalid parameter" << endl;
+        cout << "Please, enter a valid input file." << endl;
         return 1;
     }
 
-    Graph graph = create_graph_from_file(filename);
-    // graph.print();
-        
-    Graph mst(graph.getSize() - 1);
+    Graph graph = createGraphFromFile(filename);    
 
-    prim(graph, mst);
-    // mst.print();
+    Graph mst = prim(graph);
 
-    string value;
-    int is_s_option_present = get_paremeter_value((char*)"-s", argc, argv, &value);
-
-    if (is_s_option_present == 1) {
-        print_mst_solution(mst);
+    // check for -s flag. If exists, print the solution instead of the total weight
+    bool has_dash_s = getParameterValue((char*)"-s", argc, argv);
+    if (has_dash_s) {
+        printMstSolution(mst);
     } else {
         cout << getTotalWeight(mst) << endl;
     }
 
+    // check for a -o flag
     string output_filename;
-    get_paremeter_value((char*)"-o", argc, argv, &output_filename);
+    bool has_dash_o = getParameterValue((char*)"-o", argc, argv, &output_filename);
 
-    if (output_filename != "") {
-        print_mst_solution(mst, output_filename);
+    if (has_dash_o) {
+        writeMstEdgesToFile(mst, output_filename);
     }
-
 
     return 0;
 }
