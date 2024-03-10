@@ -32,8 +32,10 @@ public:
     int getSize();
     int notVisited(int v);
     void visit(int v);
+    void resetVisited();
     void registerParent(int vertex, int parent);
     const vector<Edge> &getVertexEdges(int v);
+    int getParent(int v);
     Edge *getSmallestWeightEdge(int v, set<int> &exclude);
     void print();
     void printVisited();

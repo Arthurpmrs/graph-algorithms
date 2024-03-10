@@ -33,6 +33,11 @@ void Graph::visit(int v)
     _predecessors[v] = _visitCount++;
 }
 
+void Graph::resetVisited() {
+    _visitCount = 0;
+    _predecessors = vector<int>(_vertexCount, -1);
+}
+
 void Graph::registerParent(int vertex, int parent)
 {
     _parents[vertex] = parent;
@@ -41,6 +46,10 @@ void Graph::registerParent(int vertex, int parent)
 const vector<Edge> &Graph::getVertexEdges(int v)
 {
     return _adjList[v];
+}
+
+int Graph::getParent(int v) {
+    return _parents[v];
 }
 
 Edge *Graph::getSmallestWeightEdge(int v, set<int> &exclude)
