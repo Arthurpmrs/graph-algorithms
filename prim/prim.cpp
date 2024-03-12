@@ -143,7 +143,7 @@ bool getParameterValue(char *parameter, int argc, char *argv[], string *value = 
         if (strcmp(parameter, argv[i]) == 0)
         {
             if ((strcmp(parameter, "-f") == 0 ||
-                 strcmp(parameter, "-0") == 0 ||
+                 strcmp(parameter, "-o") == 0 ||
                  strcmp(parameter, "-i") == 0) &&
                 i + 1 < argc)
             {
