@@ -39,9 +39,18 @@ void Graph::visit(int v)
     _predecessors[v] = _visitCount++;
 }
 
+void Graph::resetVisited() {
+    _visitCount = 0;
+    _predecessors = vector<int>(_vertexCount, -1);
+}
+
 void Graph::visitPostorder(int v)
 {
     _postorder[v] = _visitPostorderCount++;
+}
+
+int Graph::getParent(int v) {
+    return _parents[v];
 }
 
 void Graph::registerParent(int vertex, int parent)
@@ -52,23 +61,6 @@ void Graph::registerParent(int vertex, int parent)
 const vector<Edge> &Graph::getVertexEdges(int v)
 {
     return _adjList[v];
-}
-
-Edge *Graph::getSmallestWeightEdge(int v, set<int> &exclude)
-{
-    Edge *smallestCostEdge = NULL;
-    int smallestCost = 1000000000;
-    for (int i = 0; i < _adjList[v].size(); ++i)
-    {
-        int neighbor = _adjList[v][i].neighbor;
-        int weight = _adjList[v][i].weight;
-        if (exclude.find(neighbor) != exclude.end() && weight < smallestCost)
-        {
-            smallestCost = weight;
-            smallestCostEdge = &_adjList[v][i];
-        }
-    }
-    return smallestCostEdge;
 }
 
 void Graph::print()

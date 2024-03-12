@@ -34,15 +34,16 @@ public:
     int getSize();
     int notVisited(int v);
     void visit(int v);
+    void resetVisited();
     void visitPostorder(int v);
+    int getParent(int v);
     void registerParent(int vertex, int parent);
     const vector<Edge> &getVertexEdges(int v);
-    Edge *getSmallestWeightEdge(int v, set<int> &exclude);
     void print();
     void printVisited();
     void printParents();
     void printVisitedPO();
-    
+
     vector<int> _distances;
     vector<int> _postorder;
 };
