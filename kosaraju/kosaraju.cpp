@@ -56,7 +56,6 @@ int main(){
     int n, m;
     cin >> n >> m;
 
-
     Graph graph(n);
     readGraph(graph, m);
     // graph.print();
@@ -66,11 +65,11 @@ int main(){
     // reversedGraph.print();
     DFS(reversedGraph);
  
-    // reversedGraph.printVisitedPO();
     reversePO(reversedGraph._postorder); // Utilizar o _postorder com i = 1 ate size;
+    // reversedGraph.printVisitedPO();
 
     int scc = DFSPriority(graph, reversedGraph._postorder);
-    cout << scc << endl;
+    cout << endl << "ssc: " << scc << endl;
 
     return 0;
 }
