@@ -1,7 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <cstring>
+#include <fstream>
+#include <sstream>
 #include "../modules/graph.h"
+#include "../modules/utils.h"
 
 using namespace std;
 
@@ -16,7 +20,7 @@ void dijkstra(Graph &graph, int source)
     graph._distances[source] = 0;
 
     priority_queue<Edge> pq;
-    pq.push({source, 0});
+    pq.push({0, source, 0});
 
     while (!pq.empty())
     {
@@ -32,13 +36,14 @@ void dijkstra(Graph &graph, int source)
             if (graph._distances[v] > graph._distances[u] + weight)
             {
                 graph._distances[v] = graph._distances[u] + weight;
-                pq.push({v, graph._distances[v]});
+                graph.registerParent(v, u);
+                pq.push({0, v, graph._distances[v]});
             }
         }
     }
 
     // Check the distances and set -1 to the nodes that are not reachable
-    for (int i = 0; i < graph.getSize(); i++)
+   for (int i = 0; i < graph.getSize(); i++)
     {
         if (graph._distances[i] == 1e9)
         {
@@ -47,32 +52,91 @@ void dijkstra(Graph &graph, int source)
     }
 }
 
-void readGraph(Graph &graph, int edgeCount)
+/**
+ * @brief Writes the minimum spanning tree edges to a file.
+ *
+ * @param mst reference to the graph that represents the minimum spanning tree
+ * @param output_filename name of the file to write the edges
+ */
+void writeDistances(Graph &graph, string output_filename)
 {
-    for (int i = 0; i < edgeCount; i++)
+    ofstream file(output_filename);
+    for (int i = 1; i < graph.getSize(); i++)
     {
-        int u, v, w;
-        cin >> u >> v >> w;
-        graph.addEdge(u, v, w);
+        file << i << ":" << graph._distances[i] << " ";
     }
+
+    file << endl;
+
+    file.close();
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    int n, m;
-    cin >> n >> m;
+    // check for -h flag
+    bool has_dash_h = getParameterValue((char *)"-h", argc, argv);
+    if (has_dash_h)
+    {
+        std::cout << "Algoritmo de Dijkstra\n"
+                    << "\n"
+                    << "Opções:\n"
+                    << "-h           : mostra o help\n"
+                    << "-o <arquivo> : redireciona a saida para o 'arquivo'\n"
+                    << "-f <arquivo> : indica o 'arquivo' que contém o grafo de entrada\n"
+                    << "-i           : vértice inicial\n";
 
-    Graph graph(n);
-    readGraph(graph, m);
-    // graph.print();
+        // If the help flag is used, do not execute the code.
+        return 0;
+    }
 
-    int source = 1;
+    // Check for a -f flag
+    string filename = "";
+    getParameterValue((char *)"-f", argc, argv, &filename);
 
-    dijkstra(graph, source);
+    // It is mandatory to have a filename
+    if (filename == "")
+    {
+        cout << "Please, enter a valid input file." << endl;
+        return 1;
+    }
 
-    for (int i = 1; i < graph.getSize(); i++)
-        cout << i << ":" << graph._distances[i] << " ";
-    cout << endl;
+    Graph graph = createGraphFromFile(filename);
+
+    string initialVertexStr;
+    getParameterValue((char *)"-i", argc, argv, &initialVertexStr);
+
+    // check if the value is a number.
+    int initialVertex = 0;
+    if (initialVertexStr == "")
+    {
+        initialVertex = 1;
+    }
+    else
+    {
+        try
+        {
+            initialVertex = std::stoi(initialVertexStr);
+        }
+        catch (std::invalid_argument &e)
+        {
+            std::cerr << "Invalid argument: " << initialVertexStr << " is not a number.\n";
+            return 1; // Return with error
+        }
+    }
+
+    // 
+    dijkstra(graph, initialVertex);
+
+    // check for a -o flag
+    string output_filename;
+    bool has_dash_o = getParameterValue((char *)"-o", argc, argv, &output_filename);
+
+    if (has_dash_o)
+    {
+        writeDistances(graph, output_filename);
+    }
+
+
 
     return 0;
 }
