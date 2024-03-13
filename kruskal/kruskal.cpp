@@ -45,6 +45,22 @@ Graph kruskal(Graph &graph)
 
 int main(int argc, char *argv[])
 {
+    // check for -h flag
+    bool has_dash_h = getParameterValue((char *)"-h", argc, argv);
+    if (has_dash_h)
+    {
+        std::cout << "Algoritmo de Kruskal\n"
+                  << "\n"
+                  << "Opções:\n"
+                  << "-h           : mostra o help\n"
+                  << "-o <arquivo> : redireciona a saida para o ‘‘arquivo’’\n"
+                  << "-f <arquivo> : indica o ‘‘arquivo’’ que contém o grafo de entrada\n"
+                  << "-s           : mostra a solução\n";
+
+        // If the help flag is used, do not execute the code.
+        return 0;
+    }
+
     // Check for a -f flag
     string filename = "";
     getParameterValue((char *)"-f", argc, argv, &filename);
