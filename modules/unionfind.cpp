@@ -1,57 +1,47 @@
-#include <iostream>
-#include <vector>
+#include "unionfind.h"
 
 using namespace std;
 
-class UnionFind
+UnionFind::UnionFind(int n) : _parents(n + 1, -1), _ranks(n + 1, 0)
 {
-private:
-    vector<int> _parents;
-    vector<int> _ranks;
-    int size;
+    size = n + 1;
+}
 
-public:
-    UnionFind(int n) : _parents(n + 1, -1), _ranks(n + 1, 0)
-    {
-        size = n + 1;
-    }
+void UnionFind::makeSet(int v)
+{
+    _parents[v] = v;
+}
 
-    void makeSet(int v)
+void UnionFind::unite(int v, int u)
+{
+    if (_ranks[v] >= _ranks[u])
     {
-        _parents[v] = v;
-    }
+        _parents[u] = v;
 
-    void unite(int v, int u)
-    {
-        if (_ranks[v] >= _ranks[u])
+        if (_ranks[v] == _ranks[u])
         {
-            _parents[u] = v;
-
-            if (_ranks[v] == _ranks[u])
-            {
-                _ranks[v]++;
-            }
-        }
-        else
-        {
-            _parents[v] = u;
+            _ranks[v]++;
         }
     }
-
-    int find(int v)
+    else
     {
-        if (_parents[v] != v)
-        {
-            _parents[v] = find(_parents[v]);
-        }
-        return _parents[v];
+        _parents[v] = u;
     }
+}
 
-    void print()
+int UnionFind::find(int v)
+{
+    if (_parents[v] != v)
     {
-        for (int i = 0; i < size; ++i)
-        {
-            printf("(v=%d, parent=%d, rank=%d)\n", i, _parents[i], _ranks[i]);
-        }
+        _parents[v] = find(_parents[v]);
     }
-};
+    return _parents[v];
+}
+
+void UnionFind::print()
+{
+    for (int i = 0; i < size; ++i)
+    {
+        printf("(v=%d, parent=%d, rank=%d)\n", i, _parents[i], _ranks[i]);
+    }
+}
