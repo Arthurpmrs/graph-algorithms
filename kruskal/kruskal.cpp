@@ -4,7 +4,7 @@
 
 #include "../modules/graph.h"
 #include "../modules/utils.h"
-#include "../modules/unionfind.cpp"
+#include "../modules/unionfind.h"
 
 using namespace std;
 

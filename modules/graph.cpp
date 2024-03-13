@@ -43,7 +43,7 @@ void Graph::visit(int v)
 void Graph::resetVisited()
 {
     _visitCount = 0;
-    _predecessors = vector<int>(_vertexCount, -1);
+    fill(_predecessors.begin(), _predecessors.end(), -1);
 }
 
 void Graph::visitPostorder(int v)

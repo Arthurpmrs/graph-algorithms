@@ -74,14 +74,12 @@ void writeMstEdgesToFile(Graph &mst, string output_filename)
     {
         for (Edge e : mst.getVertexEdges(i))
         {
-            if (mst.notVisited(e.neighbor))
+            if (e.source < e.neighbor)
             {
-                file << i << " " << e.neighbor << " " << e.weight << endl;
+                file << e.source << " " << e.neighbor << " " << e.weight << endl;
             }
         }
-        mst.visit(i);
     }
-    mst.resetVisited();
     file.close();
 }
 
