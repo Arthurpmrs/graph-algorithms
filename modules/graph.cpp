@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Graph::Graph(int n) : _adjList(n + 1), _predecessors(n + 1, -1), _parents(n + 1, -1), _postorder(n + 1, -1) , _distances(n + 1, 1e9)
+Graph::Graph(int n) : _adjList(n + 1), _predecessors(n + 1, -1), _parents(n + 1, -1), _postorder(n + 1, -1), _distances(n + 1, 1e9)
 {
     _visitCount = 0;
     _visitPostorderCount = 0;
@@ -15,13 +15,14 @@ Graph::Graph(int n) : _adjList(n + 1), _predecessors(n + 1, -1), _parents(n + 1,
 
 void Graph::addEdge(int u, int v, int weight)
 {
-    _adjList[u].push_back({v, weight});
-    _adjList[v].push_back({u, weight});
+    _adjList[u].push_back({u, v, weight});
+    _adjList[v].push_back({v, u, weight});
 }
 
 // Versão sem peso e direcionado
-void Graph::addEdge2(int u, int v){
-    _adjList[u].push_back({v, -1});
+void Graph::addEdge2(int u, int v)
+{
+    _adjList[u].push_back({u, v, -1});
 }
 
 int Graph::getSize()
@@ -39,9 +40,10 @@ void Graph::visit(int v)
     _predecessors[v] = _visitCount++;
 }
 
-void Graph::resetVisited() {
+void Graph::resetVisited()
+{
     _visitCount = 0;
-    _predecessors = vector<int>(_vertexCount, -1);
+    fill(_predecessors.begin(), _predecessors.end(), -1);
 }
 
 void Graph::visitPostorder(int v)
@@ -49,7 +51,8 @@ void Graph::visitPostorder(int v)
     _postorder[v] = _visitPostorderCount++;
 }
 
-int Graph::getParent(int v) {
+int Graph::getParent(int v)
+{
     return _parents[v];
 }
 
@@ -65,7 +68,7 @@ const vector<Edge> &Graph::getVertexEdges(int v)
 
 void Graph::print()
 {
-    for (int i = 1; i < _vertexCount+1; i++)
+    for (int i = 1; i < _vertexCount + 1; i++)
     {
         cout << i << " -> ";
         for (unsigned int j = 0; j < _adjList[i].size(); j++)
