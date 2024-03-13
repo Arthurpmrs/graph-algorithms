@@ -9,11 +9,12 @@ using namespace std;
 
 struct Edge
 {
+    int source;
     int neighbor;
     int weight;
     bool operator<(const Edge &other) const
     {
-        return weight <= other.weight;
+        return weight > other.weight;
     }
 };
 
