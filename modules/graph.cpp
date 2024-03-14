@@ -5,7 +5,7 @@ using namespace std;
 Graph::Graph(int n) : _adjList(n + 1), _predecessors(n + 1, -1), _parents(n + 1, -1), _postorder(n + 1, -1), _distances(n + 1, 1e9)
 {
     _visitCount = 0;
-    _visitPostorderCount = 0;
+    _visitPostorderCount = 1;
     _vertexCount = n;
     for (int i = 0; i < _vertexCount; i++)
     {
