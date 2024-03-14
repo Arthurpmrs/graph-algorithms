@@ -7,9 +7,6 @@ using namespace std;
 void DFSRec(Graph &graph, int v)
 {
     graph.visit(v);
-    cout << "V: " << v << endl;
-    graph.printVisited();
-    cout << endl;
 
     const vector<Edge> &edges = graph.getVertexEdges(v);
     for (unsigned int i = 0; i < edges.size(); i++)
@@ -31,6 +28,7 @@ int DFSPriority(Graph &graph, vector<int> postorder, int scc = 0)
         int v = postorder[i];
         if (graph.notVisited(v))
         {
+            cout << v << " ";
             scc++;
             DFSRec(graph, v);
         }

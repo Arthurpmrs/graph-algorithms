@@ -26,30 +26,33 @@ void reversePO(vector<int> &postorder){
     int size = postorder.size();
 
     vector<int> orderPO(size);
-    for(int i = 1; i < size; i++){
-        orderPO[postorder[i]] = i-1;
-    }
-
-    postorder = orderPO;
-
-    /*
-    for(int i = 0; i < size-1; i++){
-        cout << postorder[i] << " ";
-    }
-    cout << endl; 
-    */
-    
-    for (int i = 0; i < size; i++){
-        postorder[i] = orderPO[size - i - 1 ];
+    for (int i = 1; i < size; i++)
+    {
+        orderPO[i] = postorder[postorder[i]];
     }
 
     /*
-    for(int i = 1; i < size; i++){
-        cout << postorder[i] << " ";
+    cout << "postorder" << endl;
+    for (int i = 1; i < size; i++)
+    {
+        cout << i << " : " << postorder[postorder[i]] << endl;
     }
     cout << endl;
     */
     
+    for (int i = 1; i < size; i++)
+    {
+        postorder[i] = orderPO[size - i];
+    }
+    
+    /* 
+    cout << "reversed postorder" << endl;
+    for (int i = 1; i < size; i++)
+    {
+        cout << i << " : " << postorder[i] << endl;
+    }
+    cout << endl;
+    */
 }
 
 int main(){
@@ -64,12 +67,14 @@ int main(){
     reverseGraph(graph, reversedGraph);
     // reversedGraph.print();
     DFS(reversedGraph);
- 
+
+    // reversedGraph.printVisitedPO();
     reversePO(reversedGraph._postorder); // Utilizar o _postorder com i = 1 ate size;
+    // cout << "Reverse ";
     // reversedGraph.printVisitedPO();
 
     int scc = DFSPriority(graph, reversedGraph._postorder);
-    cout << endl << "ssc: " << scc << endl;
+    cout << "ssc: " << scc << endl;
 
     return 0;
 }
