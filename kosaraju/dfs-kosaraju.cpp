@@ -28,7 +28,7 @@ int DFSPriority(Graph &graph, vector<int> postorder, int scc = 0)
         int v = postorder[i];
         if (graph.notVisited(v))
         {
-            cout << v << " ";
+            cout << "Raiz: " << v << endl;
             scc++;
             DFSRec(graph, v);
         }

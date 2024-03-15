@@ -31,28 +31,34 @@ void reversePO(vector<int> &postorder){
         orderPO[i] = postorder[postorder[i]];
     }
 
-    /*
+    
     cout << "postorder" << endl;
     for (int i = 1; i < size; i++)
     {
-        cout << i << " : " << postorder[postorder[i]] << endl;
+        cout << "vetor " << i << " : posição " << postorder[i] << endl;
     }
     cout << endl;
-    */
+    cout << "orderPO" << endl;
+    for (int i = 1; i < size; i++)
+    {
+        cout << "vetor " << i << " : posição " << orderPO[i] << endl;
+    }
+    cout << endl;
+    
     
     for (int i = 1; i < size; i++)
     {
         postorder[i] = orderPO[size - i];
     }
-    
-    /* 
+
+
     cout << "reversed postorder" << endl;
     for (int i = 1; i < size; i++)
     {
         cout << i << " : " << postorder[i] << endl;
     }
     cout << endl;
-    */
+    
 }
 
 int main(){
@@ -74,7 +80,7 @@ int main(){
     // reversedGraph.printVisitedPO();
 
     int scc = DFSPriority(graph, reversedGraph._postorder);
-    cout << "ssc: " << scc << endl;
+    cout << "scc: " << scc << endl;
 
     return 0;
 }
