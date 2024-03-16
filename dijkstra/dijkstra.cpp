@@ -43,7 +43,7 @@ void dijkstra(Graph &graph, int source)
     }
 
     // Check the distances and set -1 to the nodes that are not reachable
-   for (int i = 0; i < graph.getSize(); i++)
+    for (int i = 0; i < graph.getSize(); i++)
     {
         if (graph._distances[i] == 1e9)
         {
@@ -71,6 +71,16 @@ void writeDistances(Graph &graph, string output_filename)
     file.close();
 }
 
+void printDistances(Graph &graph)
+{
+    for (int i = 1; i < graph.getSize(); i++)
+    {
+        cout << i << ":" << graph._distances[i] << " ";
+    }
+
+    cout << endl;
+}
+
 int main(int argc, char *argv[])
 {
     // check for -h flag
@@ -78,12 +88,12 @@ int main(int argc, char *argv[])
     if (has_dash_h)
     {
         std::cout << "Algoritmo de Dijkstra\n"
-                    << "\n"
-                    << "Opções:\n"
-                    << "-h           : mostra o help\n"
-                    << "-o <arquivo> : redireciona a saida para o 'arquivo'\n"
-                    << "-f <arquivo> : indica o 'arquivo' que contém o grafo de entrada\n"
-                    << "-i           : vértice inicial\n";
+                  << "\n"
+                  << "Opções:\n"
+                  << "-h           : mostra o help\n"
+                  << "-o <arquivo> : redireciona a saida para o 'arquivo'\n"
+                  << "-f <arquivo> : indica o 'arquivo' que contém o grafo de entrada\n"
+                  << "-i           : vértice inicial\n";
 
         // If the help flag is used, do not execute the code.
         return 0;
@@ -126,6 +136,7 @@ int main(int argc, char *argv[])
 
     // Run the algorithm
     dijkstra(graph, initialVertex);
+    printDistances(graph);
 
     // check for a -o flag
     string output_filename;
@@ -135,8 +146,6 @@ int main(int argc, char *argv[])
     {
         writeDistances(graph, output_filename);
     }
-
-
 
     return 0;
 }
