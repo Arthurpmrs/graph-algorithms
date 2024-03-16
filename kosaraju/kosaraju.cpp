@@ -53,7 +53,7 @@ int main(){
     // reversedGraph.printVisitedPO();
 
     int scc = DFSPriority(graph, reversedGraph._postorder);
-    cout << endl << "scc: " << scc << endl;
+    // cout << endl << "scc: " << scc << endl;
 
     return 0;
 }
