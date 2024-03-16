@@ -13,6 +13,7 @@ void DFSRec(Graph &graph, int v)
     {
         if (graph.notVisited(edges[i].neighbor))
         {
+            cout << edges[i].neighbor << " ";
             graph.registerParent(edges[i].neighbor, v);
             DFSRec(graph, edges[i].neighbor);
         }
@@ -28,7 +29,7 @@ int DFSPriority(Graph &graph, vector<int> postorder, int scc = 0)
         int v = postorder[i];
         if (graph.notVisited(v))
         {
-            cout << "Raiz: " << v << endl;
+            cout << endl << "Raiz: " << v << " ";
             scc++;
             DFSRec(graph, v);
         }
