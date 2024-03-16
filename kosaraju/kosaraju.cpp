@@ -10,7 +10,6 @@ void readGraph(Graph &graph, int edgeCount){
         cin >> u >> v;
         graph.addEdge2(u, v);
     }
-    
 }
 
 void reverseGraph(Graph &graph, Graph &reversedGraph){
@@ -22,40 +21,22 @@ void reverseGraph(Graph &graph, Graph &reversedGraph){
     }
 }
 
+// Função para ordenar o vetor de postorder por ordem de visitação e invertê-lo
 void reversePO(vector<int> &postorder){
-    int size = postorder.size();
-
-    vector<int> orderPO(size);
-    for(int i = 1; i < size; i++){
-        orderPO[postorder[i]] = i-1;
+    vector<int> aux = postorder; 
+    for(int i = 1; i < postorder.size(); i++){ // Colocar os vetores na ordem
+        postorder[aux[i]] = i;
     }
-
-    postorder = orderPO;
-
-    /*
-    for(int i = 0; i < size-1; i++){
-        cout << postorder[i] << " ";
-    }
-    cout << endl; 
-    */
+    aux = postorder;
     
-    for (int i = 0; i < size; i++){
-        postorder[i] = orderPO[size - i - 1 ];
+    for(int i = 0; i < postorder.size(); i++){ // Inverter o vetor
+        postorder[i] = aux[aux.size() - i];
     }
-
-    /*
-    for(int i = 1; i < size; i++){
-        cout << postorder[i] << " ";
-    }
-    cout << endl;
-    */
-    
 }
 
 int main(){
     int n, m;
     cin >> n >> m;
-
 
     Graph graph(n);
     readGraph(graph, m);
@@ -65,12 +46,14 @@ int main(){
     reverseGraph(graph, reversedGraph);
     // reversedGraph.print();
     DFS(reversedGraph);
- 
+
     // reversedGraph.printVisitedPO();
     reversePO(reversedGraph._postorder); // Utilizar o _postorder com i = 1 ate size;
+    // cout << "Reverse ";
+    // reversedGraph.printVisitedPO();
 
     int scc = DFSPriority(graph, reversedGraph._postorder);
-    cout << scc << endl;
+    cout << endl << "scc: " << scc << endl;
 
     return 0;
 }

@@ -134,6 +134,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // Run the algorithm
     dijkstra(graph, initialVertex);
     printDistances(graph);
 
