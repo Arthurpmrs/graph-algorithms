@@ -14,7 +14,7 @@ using namespace std;
 void reverseGraph(Graph &graph, Graph &reversedGraph){
     for(int i = 0; i < graph.getSize(); i++){
         const vector<Edge> &edges = graph.getVertexEdges(i);
-        for(int j = 0; j < edges.size(); j++){
+        for(long unsigned int j = 0; j < edges.size(); j++){
             reversedGraph.addEdge2(edges[j].neighbor, i);
         }
     }
@@ -28,14 +28,14 @@ void reverseGraph(Graph &graph, Graph &reversedGraph){
 void reversePO(vector<int> &postorder){
     // To put the vectors in order
     vector<int> aux = postorder; 
-    for(int i = 1; i < postorder.size(); i++){
+    for(long unsigned int i = 1; i < postorder.size(); i++){
         postorder[aux[i]] = i;
     }
 
     aux = postorder;
 
     // To reverse the vector
-    for(int i = 0; i < postorder.size(); i++){ 
+    for(long unsigned int i = 0; i < postorder.size(); i++){ 
         postorder[i] = aux[aux.size() - i];
     }
 }

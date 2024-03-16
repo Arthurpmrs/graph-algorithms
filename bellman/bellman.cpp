@@ -22,14 +22,13 @@ void bellmanFord(Graph &graph, int s){
         for (int u = 1; u < graph.getSize(); u++){ 
           vector<Edge> edges = graph.getVertexEdges(u);
           // Iterate over all edges of the vertex u
-            for (int i = 0; i < edges.size(); i++){
+            for (long unsigned int i = 0; i < edges.size(); i++){
                 int v = edges[i].neighbor;
                 int w = edges[i].weight;
 
                 if(graph._distances[u] + w < graph._distances[v]){
                     graph._distances[v] = graph._distances[u] + w;
                 }
-
             }
         }
     }
@@ -62,7 +61,7 @@ void writeDistances(Graph &graph, string output_filename)
 int getFirstVertex(Graph &graph)
 {
     int initialVertex = 1;
-    int moreEdges = graph.getVertexEdges(initialVertex).size();
+    long unsigned int moreEdges = graph.getVertexEdges(initialVertex).size();
 
     for (int i = 1; i < graph.getSize(); i++)
     {
