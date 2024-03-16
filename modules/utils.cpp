@@ -80,6 +80,32 @@ Graph createGraphFromFile2(string filename)
     return graph;
 }
 
+Graph createGraphFromFile3(string filename)
+{
+    ifstream file(filename);
+
+    int n, m;
+    string line;
+
+    getline(file, line);
+
+    istringstream iss(line);
+    iss >> n >> m;
+
+    Graph graph(n);
+
+    while (getline(file, line))
+    {
+        istringstream iss(line);
+        int u, v, w;
+        iss >> u >> v >> w;
+        graph.addEdge3(u, v, w);
+    }
+    file.close();
+
+    return graph;
+}
+
 int getTotalWeight(Graph &mst)
 {
     int totalWeight = 0;

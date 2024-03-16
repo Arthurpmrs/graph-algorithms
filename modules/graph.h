@@ -32,6 +32,7 @@ public:
     Graph(int n);
     void addEdge(int u, int v, int weight);
     void addEdge2(int u, int v);
+    void addEdge3(int u, int v, int weight);
     int getSize();
     int notVisited(int v);
     void visit(int v);

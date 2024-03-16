@@ -25,6 +25,12 @@ void Graph::addEdge2(int u, int v)
     _adjList[u].push_back({u, v, -1});
 }
 
+// Versão com peso e direcionado
+void Graph::addEdge3(int u, int v, int weight)
+{
+    _adjList[u].push_back({u, v, weight});
+}
+
 int Graph::getSize()
 {
     return _adjList.size();
