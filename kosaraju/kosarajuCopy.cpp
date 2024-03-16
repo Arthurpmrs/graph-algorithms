@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../modules/graph.h"
 #include "../modules/utils.h"
-#include "dfs-kosarajuCopy.cpp"
+#include "../modules/graph.h"
+#include "dfs-kosaraju.cpp"
 
 using namespace std;
 
@@ -21,15 +21,13 @@ void reversePO(vector<int> &postorder){
         postorder[aux[i]] = i;
     }
     aux = postorder;
-    
+
     for(int i = 0; i < postorder.size(); i++){ // Inverter o vetor
         postorder[i] = aux[aux.size() - i];
     }
 }
 
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     // check for -h flag
     bool has_dash_h = getParameterValue((char *)"-h", argc, argv);
     if (has_dash_h)
@@ -38,7 +36,6 @@ int main(int argc, char *argv[])
                     << "\n"
                     << "Opções:\n"
                     << "-h           : mostra o help\n"
-                    << "-o <arquivo> : redireciona a saida para o 'arquivo'\n"
                     << "-f <arquivo> : indica o 'arquivo' que contém o grafo de entrada\n";
 
         // If the help flag is used, do not execute the code.
@@ -56,21 +53,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // check for a -o flag
-    string output_filename;
-    bool has_dash_o = getParameterValue((char *)"-o", argc, argv, &output_filename);
+    Graph graph = createGraphFromFile2(filename);
 
-    Graph graph = createGraphFromFile(filename);
-
-    Graph reversedGraph(graph.getSize());
+    Graph reversedGraph(graph.getSize() - 1);
     reverseGraph(graph, reversedGraph);
+
     DFS(reversedGraph);
-    
-   
-    reversePO(reversedGraph._postorder); // Use the postorder with i = 1 to size;
 
-    int scc = DFSPriority(graph, reversedGraph._postorder, output_filename);
+    reversePO(reversedGraph._postorder); // Utilizar o _postorder com i = 1 ate size;
 
+    int scc = DFSPriority(graph, reversedGraph._postorder);
 
     return 0;
 }

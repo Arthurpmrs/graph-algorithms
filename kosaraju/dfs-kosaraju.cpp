@@ -27,6 +27,7 @@ int DFSPriority(Graph &graph, vector<int> postorder, int scc = 0)
     for (int i = 1; i < graph.getSize(); i++)
     {
         int v = postorder[i];
+        // cout << "teste: " << v << endl;
         if (graph.notVisited(v))
         {
             cout << v << " ";
