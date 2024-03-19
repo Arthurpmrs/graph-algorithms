@@ -44,9 +44,10 @@ void writeDistances(Graph &graph, string output_filename)
     ofstream file(output_filename);
     for (int i = 1; i < graph.getSize(); i++)
     {
-        file << i << ":" << graph._distances[i] << " ";
+        file << i << ":";
+        graph._distances[i] == INF ? file << "INF "
+                                   : file << graph._distances[i] << " ";
     }
-
     file << endl;
 
     file.close();
@@ -86,7 +87,7 @@ int main(int argc, char *argv[])
                     << "-h           : mostra o help\n"
                     << "-o <arquivo> : redireciona a saida para o 'arquivo'\n"
                     << "-f <arquivo> : indica o 'arquivo' que contém o grafo de entrada\n"
-                    << "-i           : vértice inicial\n";
+                    << "-i           : vértice inicial (caso não seja informado, o vértice com mais arestas será o vértice inicial).\n";
 
         // If the help flag is used, do not execute the code.
         return 0;
@@ -138,9 +139,7 @@ int main(int argc, char *argv[])
     if (has_dash_o)
     {
         for(int i = 1; i < graph.getSize(); i++)
-            graph._distances[i] = graph._distances[i] == INF ? -1 : graph._distances[i];
-
-        writeDistances(graph, output_filename);
+            writeDistances(graph, output_filename);
     }
 
     return 0;
