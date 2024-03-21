@@ -9,6 +9,9 @@
 #include make file
 !makefile
 
+# extra
+generate-bellman-tests
+
 # IDE
 .vscode
 

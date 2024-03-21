@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall
+CFLAGS=
 VPATH=../modules
 DEPS=graph.h utils.h unionfind.h
 
@@ -7,4 +7,4 @@ DEPS=graph.h utils.h unionfind.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 kruskal: kruskal.o graph.o unionfind.o utils.o
-	$(CC) -o kruskal kruskal.o graph.o unionfind.o utils.o $(CFLAGS)
+	$(CC) -o kruskal.bin kruskal.o graph.o unionfind.o utils.o $(CFLAGS)

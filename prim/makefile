@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall
+CFLAGS=
 VPATH=../modules
 DEPS=graph.h utils.h
 
@@ -7,4 +7,4 @@ DEPS=graph.h utils.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 prim: prim.o graph.o utils.o
-	$(CC) -o prim prim.o graph.o utils.o $(CFLAGS)
+	$(CC) -o prim.bin prim.o graph.o utils.o $(CFLAGS)

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Binários
-kosaraju=../kosaraju/kosaraju
-prim=../prim/prim
-kruskal=../kruskal/kruskal
-dijkstra=../dijkstra/dijkstra
+kosaraju=./kosaraju.bin
+prim=./prim.bin
+kruskal=./kruskal.bin
+dijkstra=./dijkstra.bin
 
 echo "Testando algoritmo de Kosaraju"
 for i in instances_scc/*.dat
