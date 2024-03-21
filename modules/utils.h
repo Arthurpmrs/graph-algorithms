@@ -22,12 +22,28 @@ using namespace std;
 bool getParameterValue(char *parameter, int argc, char *argv[], string *value = NULL);
 
 /**
- * @brief Create a graph from a given input file
+ * @brief Create a graph from a given input file  | Non-Directed and Weighted Graph
  *
  * @param filename input filename
  * @return Graph
  */
 Graph createGraphFromFile(string filename);
+
+/**
+ * @brief Create a graph from a given input file | Directed and Non-Weighted Graph
+ *
+ * @param filename input filename
+ * @return Graph
+ */
+Graph createGraphFromFile2(string filename);
+
+/**
+ * @brief Create a graph from a given input file | Directed and Weighted Graph
+ *
+ * @param filename input filename
+ * @return Graph
+ */
+Graph createGraphFromFile3(string filename);
 
 /**
  * @brief Get the total weight of the minimum spanning tree
@@ -51,5 +67,6 @@ void printMstSolution(Graph &mst);
  * @param output_filename name of the file to write the edges
  */
 void writeMstEdgesToFile(Graph &mst, string output_filename);
+
 
 #endif // UTILS_H

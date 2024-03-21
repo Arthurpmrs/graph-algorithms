@@ -53,9 +53,9 @@ void dijkstra(Graph &graph, int source)
 }
 
 /**
- * @brief Writes the minimum spanning tree edges to a file.
+ * @brief Writes the distances to a file.
  *
- * @param mst reference to the graph that represents the minimum spanning tree
+ * @param graph reference to the graph to be processed
  * @param output_filename name of the file to write the edges
  */
 void writeDistances(Graph &graph, string output_filename)
@@ -83,7 +83,7 @@ void printDistances(Graph &graph)
 
 int main(int argc, char *argv[])
 {
-    // check for -h flag
+    // Check for -h flag
     bool has_dash_h = getParameterValue((char *)"-h", argc, argv);
     if (has_dash_h)
     {
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     string initialVertexStr;
     getParameterValue((char *)"-i", argc, argv, &initialVertexStr);
 
-    // check if the value is a number.
+    // Check if the value is a number.
     int initialVertex = 0;
     if (initialVertexStr == "")
     {
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     dijkstra(graph, initialVertex);
     printDistances(graph);
 
-    // check for a -o flag
+    // Check for a -o flag
     string output_filename;
     bool has_dash_o = getParameterValue((char *)"-o", argc, argv, &output_filename);
 
